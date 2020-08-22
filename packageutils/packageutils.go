@@ -51,7 +51,7 @@ const (
 )
 
 // abrUIDRE is a regular expression to match an abbreviated uid (ie u0a2). Based on the format printed in frameworks/base/core/java/android/os/UserHandle.java
-var abrUIDRE = regexp.MustCompile("u(?P<userId>\\d+)(?P<aidType>[ias])(?P<appId>\\d+)")
+var abrUIDRE = regexp.MustCompile("u(?P<userId>\\d+)(?P<aidType>[ias]+)(?P<appId>\\d+)")
 
 // This list is not comprehensive but it will cover the most common cases. The list was curated
 // from the output of running both 'adb shell dumpsys activity providers' and

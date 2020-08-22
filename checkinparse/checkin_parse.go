@@ -1979,7 +1979,7 @@ func parseAppWifi(record []string, app *bspb.BatteryStats_App) (string, []error)
 //
 // format: <idle_time>, <rx_time>, <power_ma_ms>, tx_time...
 func parseControllerData(pc checkinutil.Counter, section string, record []string) (*bspb.BatteryStats_ControllerActivity, error) {
-	var idle, rx, pwr int64
+	var idle, rx, pwr float64
 	rem, err := parseSlice(pc, section, record, &idle, &rx, &pwr)
 	if err != nil {
 		return nil, err
@@ -1988,12 +1988,12 @@ func parseControllerData(pc checkinutil.Counter, section string, record []string
 		return nil, fmt.Errorf(`%s didn't contain any transmit level data: "%v"`, section, record)
 	}
 	c := &bspb.BatteryStats_ControllerActivity{
-		IdleTimeMsec: proto.Int64(idle),
-		RxTimeMsec:   proto.Int64(rx),
-		PowerMah:     proto.Int64(pwr),
+		IdleTimeMsec: proto.Int64(int64(idle)),
+		RxTimeMsec:   proto.Int64(int64(rx)),
+		PowerMah:     proto.Int64(int64(pwr)),
 	}
 	for i, t := range rem {
-		tm, err := strconv.Atoi(t)
+		tm, err := strconv.ParseFloat(t, 64)
 		if err != nil {
 			return nil, fmt.Errorf("%s contained invalid transmit value: %v", section, err)
 		}
